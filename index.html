@@ -455,6 +455,15 @@ button.tile:hover{background:var(--surface-2)}
 .dbt .nm{font-weight:600;min-width:12em}
 .dbt .code{font-size:12px}
 
+/* ---------- channel switch ---------- */
+.chsw{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:14px;padding:4px;border-radius:14px;background:rgba(0,0,0,.18)}
+.chsw-b{display:grid;justify-items:center;align-content:center;gap:0;min-width:0;min-height:48px;padding:4px 4px;border:0;border-radius:10px;background:transparent;color:var(--on-navy-2);font-size:13.5px;font-weight:600;line-height:1.25;text-align:center}
+.chsw-b .n{display:block;font-size:11.5px;font-weight:500;color:var(--on-navy-3);font-variant-numeric:tabular-nums}
+.chsw-b:hover{background:rgba(255,255,255,.08)}
+.chsw-b[aria-pressed="true"]{background:var(--gold);color:var(--on-gold)}
+.chsw-b[aria-pressed="true"] .n{color:var(--on-gold);opacity:.72}
+.ch-badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;background:var(--navy);color:#fff;font-size:12.5px;font-weight:600}
+.group-h.ch{font-size:15px;color:var(--ink);margin-top:24px}
 /* ---------- login gate ---------- */
 .gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow-y:auto;padding:24px 16px calc(24px + env(safe-area-inset-bottom,0px));background:var(--navy)}
 .gate-card{display:grid;gap:14px;width:100%;max-width:400px;padding:26px 22px 22px;border-radius:22px;background:var(--surface);box-shadow:var(--shadow-2)}
@@ -477,6 +486,7 @@ button.tile:hover{background:var(--surface-2)}
         </div>
         <button type="button" class="icon-btn on-navy" data-act="settings" aria-label="ตั้งค่า"><svg class="ic" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button>
       </div>
+      <div class="chsw" role="group" aria-label="Channel"></div>
       <div class="hero-stats" id="stock-stats" aria-live="polite"></div>
     </div></header>
     <div class="bar"><div class="bar-inner">
@@ -512,6 +522,7 @@ button.tile:hover{background:var(--surface-2)}
         </div>
         <button type="button" class="icon-btn on-navy" data-act="settings" aria-label="ตั้งค่า"><svg class="ic" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button>
       </div>
+      <div class="chsw" role="group" aria-label="Channel"></div>
     </div></header>
     <div class="bar"><div class="bar-inner">
       <div class="search">
@@ -536,6 +547,7 @@ button.tile:hover{background:var(--surface-2)}
         </div>
         <button type="button" class="icon-btn on-navy" data-act="settings" aria-label="ตั้งค่า"><svg class="ic" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button>
       </div>
+      <div class="chsw" role="group" aria-label="Channel"></div>
       <div id="dash-hero"></div>
     </div></header>
     <div class="wrap"><div class="wrap-inner">
@@ -671,12 +683,13 @@ const S = {
     tab: TABS[location.hash.replace('#', '')] || store.get('tab', 'stock'),
     q: '', cat: 'all', need: false, sort: store.get('sort', 'name'),
     hType: 'all', hQ: '', hLimit: 120, hConfirm: null,
-    range: store.get('range', 30), tSort: { k: 'name', dir: 1 },
+    range: store.get('range', 30), tSort: { k: 'name', dir: 1 }, ch: store.get('ch', 'all'),
   },
 };
 if (!['stock', 'history', 'dash'].includes(S.v.tab)) S.v.tab = 'stock';
 if (![7, 30, 90].includes(S.v.range)) S.v.range = 30;
 if (!['name', 'low', 'recent'].includes(S.v.sort)) S.v.sort = 'name';
+if (S.v.ch !== 'all' && !CHANNELS.some(c => c.id === S.v.ch)) S.v.ch = 'all';
 const canWrite = () => S.conn === 'ok';
 
 function recompute() {
@@ -702,7 +715,7 @@ function recompute() {
       id, name: str(d.name) || '(ไม่มีชื่อ)', code: str(d.code), cat: str(d.cat), unit: str(d.unit) || 'ชิ้น',
       min: Math.max(0, Number(d.min) || 0), loc: str(d.loc), note: str(d.note),
       photo: str(d.photo) || null, thumb: str(d.thumb) || null, deleted: !!d.deleted, deletedAt: Number(d.deletedAt) || 0,
-      createdAt: Number(d.createdAt) || 0, createdBy: str(d.createdBy), lastAt, qty, entries,
+      createdAt: Number(d.createdAt) || 0, createdBy: str(d.createdBy), lastAt, qty, entries, ch: str(d.group),
     };
     for (const en of entries) { en.item = it; all.push(en); }
     items.push(it);
@@ -719,6 +732,10 @@ function catList(includeHidden) {
   }).filter(c => includeHidden || !c.hidden)
     .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, 'th'));
 }
+const CHANNELS = [{ id: 'istudio', name: 'iStudio' }, { id: 'ustore', name: 'U-Store' }, { id: 'aismobi', name: 'AIS + Mobi' }];
+const chName = id => (CHANNELS.find(c => c.id === id) || { name: 'ไม่ระบุ Channel' }).name;
+const chKey = i => (CHANNELS.some(c => c.id === i.ch) ? i.ch : '_none');
+const inCh = i => S.v.ch === 'all' || chKey(i) === S.v.ch;
 const catName = id => (id && S.cats[id] && S.cats[id].name ? str(S.cats[id].name) : 'ไม่ระบุหมวด');
 const catKey = i => (i.cat && S.cats[i.cat] ? i.cat : '_none');
 
@@ -898,7 +915,15 @@ function scheduleRender() {
   if (rq) return;
   rq = requestAnimationFrame(() => { rq = 0; renderAll(); });
 }
+function renderChannels() {
+  const counts = { all: 0 };
+  for (const i of S.items) { if (i.deleted) continue; counts.all++; const k = chKey(i); counts[k] = (counts[k] || 0) + 1; }
+  const opts = [{ id: 'all', name: 'ทั้งหมด' }, ...CHANNELS];
+  const h = opts.map(c => `<button type="button" class="chsw-b" data-ch="${c.id}" aria-pressed="${S.v.ch === c.id}">${esc(c.name)}${S.itemsReady ? ` <span class="n">${fmt(counts[c.id] || 0)}</span>` : ''}</button>`).join('');
+  $$('.chsw').forEach(el => { el.innerHTML = h; });
+}
 function renderAll() {
+  renderChannels();
   for (const t of ['stock', 'history', 'dash']) $('#v-' + t).hidden = S.v.tab !== t;
   $$('.tab').forEach(b => { if (b.dataset.tab === S.v.tab) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   $('#fab').hidden = !(S.v.tab === 'stock' && canWrite() && S.itemsReady && S.items.some(i => !i.deleted));
@@ -936,7 +961,7 @@ function resolveNames() {
 
 /* ================= render: stock ================= */
 function renderStock() {
-  const act = S.items.filter(i => !i.deleted);
+  const act = S.items.filter(i => !i.deleted && inCh(i));
   const units = act.reduce((a, i) => a + Math.max(0, i.qty), 0);
   const need = act.filter(i => status(i) !== 'ok').length;
   $('#stock-stats').innerHTML = S.conn !== 'ok' ? '' : !S.itemsReady ? '<span>กำลังโหลดข้อมูล…</span>'
@@ -958,14 +983,20 @@ function renderStock() {
   $('#stock-banner').innerHTML = bannerHtml();
   const listEl = $('#stock-list'), headEl = $('#stock-head');
   if (loading()) { headEl.hidden = true; listEl.innerHTML = skeleton(4); return; }
-  if (!act.length) { headEl.hidden = true; listEl.innerHTML = emptyStock(); return; }
+  if (!act.length) {
+    headEl.hidden = true;
+    listEl.innerHTML = S.v.ch !== 'all' && S.items.some(i => !i.deleted)
+      ? `<div class="empty small"><h2>ยังไม่มีของของ ${esc(chName(S.v.ch))}</h2><p>เพิ่มรายการใหม่ แล้วเลือก Channel เป็น ${esc(chName(S.v.ch))}</p>${canWrite() ? `<button type="button" class="btn gold" data-act="new">${svg('plus', 20, 2.3)}เพิ่มรายการ</button>` : ''}</div>`
+      : emptyStock();
+    return;
+  }
   headEl.hidden = false;
 
   let list = act;
   if (S.v.need) list = list.filter(i => status(i) !== 'ok');
   if (S.v.cat !== 'all') list = list.filter(i => catKey(i) === S.v.cat);
   const q = norm(S.v.q);
-  if (q) list = list.filter(i => norm(`${i.name} ${i.code} ${i.loc} ${catName(i.cat)} ${i.note}`).includes(q));
+  if (q) list = list.filter(i => norm(`${i.name} ${i.code} ${i.loc} ${catName(i.cat)} ${chName(i.ch)} ${i.note}`).includes(q));
   const byName = (a, b) => a.name.localeCompare(b.name, 'th');
   if (S.v.sort === 'low') list.sort((a, b) => SEV[status(a)] - SEV[status(b)] || ratio(a) - ratio(b) || byName(a, b));
   else if (S.v.sort === 'recent') list.sort((a, b) => b.lastAt - a.lastAt || byName(a, b));
@@ -979,12 +1010,14 @@ function renderStock() {
     return;
   }
   if (S.v.sort === 'name' && S.v.cat === 'all' && !q) {
-    const groups = new Map([...catList(true).map(c => [c.id, []]), ['_none', []]]);
-    for (const i of list) groups.get(catKey(i)).push(i);
+    const byCh = S.v.ch === 'all';
+    const groups = byCh ? new Map([...CHANNELS.map(c => [c.id, []]), ['_none', []]]) : new Map([...catList(true).map(c => [c.id, []]), ['_none', []]]);
+    for (const i of list) groups.get(byCh ? chKey(i) : catKey(i)).push(i);
     let h = '';
     for (const [k, arr] of groups) {
       if (!arr.length) continue;
-      h += `<h2 class="group-h"><span>${esc(k === '_none' ? 'ไม่ระบุหมวด' : catName(k))}</span><span class="num">${fmt(arr.length)} รายการ</span></h2><div class="items">${arr.map(i => itemCard(i, false)).join('')}</div>`;
+      const label = byCh ? chName(k) : (k === '_none' ? 'ไม่ระบุหมวด' : catName(k));
+      h += `<h2 class="group-h${byCh ? ' ch' : ''}"><span>${esc(label)}</span><span class="num">${fmt(arr.length)} รายการ</span></h2><div class="items">${arr.map(i => itemCard(i, byCh)).join('')}</div>`;
     }
     listEl.innerHTML = h;
   } else {
@@ -996,7 +1029,7 @@ function itemCard(i, showCat) {
   const meta = [];
   if (i.loc) meta.push(`<span class="bin">${esc(i.loc)}</span>`);
   if (i.code) meta.push(`<span class="code">${esc(i.code)}</span>`);
-  if (showCat) meta.push(`<span class="cat-s">${esc(catName(i.cat))}</span>`);
+  if (showCat) meta.push(`<span class="cat-s">${esc(S.v.ch === 'all' && !(S.v.sort === 'name' && S.v.cat === 'all' && !norm(S.v.q)) ? chName(i.ch) + ' · ' : '')}${esc(catName(i.cat))}</span>`);
   return `<article class="item" data-id="${esc(i.id)}">`
     + `<button type="button" class="item-open" data-act="open">${thumbHtml(i, 60)}<span class="item-main"><span class="item-name">${esc(i.name)}</span>${meta.length ? `<span class="item-meta">${meta.join('')}</span>` : ''}${st !== 'ok' ? pill(st) : ''}</span></button>`
     + `<div class="item-side"><div class="qty"><span class="qty-n">${fmt(i.qty)}</span><span class="qty-u">${esc(i.unit)}</span></div>`
@@ -1034,7 +1067,7 @@ function entryBits(e, skipTo) {
 }
 function renderHistory() {
   $('#hist-banner').innerHTML = bannerHtml();
-  const all = S.entries;
+  const all = S.entries.filter(e => inCh(e.item));
   const counts = { all: all.length, in: 0, out: 0, adj: 0 };
   for (const e of all) counts[e.type === 'open' ? 'in' : e.type]++;
   const chips = [['all', 'ทั้งหมด'], ['in', 'รับเข้า'], ['out', 'เบิกออก'], ['adj', 'ปรับยอด']];
@@ -1107,7 +1140,7 @@ function rangeData() {
   const byItem = new Map(), byDest = new Map();
   for (const e of S.entries) {
     if (e.at < from) break;
-    if (e.void || e.at >= to) continue;
+    if (e.void || e.at >= to || !inCh(e.item)) continue;
     if (e.type === 'adj') { T.adjN++; continue; }
     if (e.type !== 'in' && e.type !== 'out') continue;
     let b = null;
@@ -1134,6 +1167,7 @@ function hbars(rows, color) {
 const TCOLS = [
   { k: 'code', l: 'รหัส', get: i => i.code },
   { k: 'name', l: 'ชื่อรายการ', get: i => i.name },
+  { k: 'ch', l: 'Channel', get: i => chName(i.ch) },
   { k: 'cat', l: 'หมวด', get: i => catName(i.cat) },
   { k: 'qty', l: 'คงเหลือ', n: true, get: i => i.qty },
   { k: 'unit', l: 'หน่วย', get: i => i.unit },
@@ -1152,12 +1186,13 @@ function sortedTable(items) {
 }
 function renderDash() {
   $('#dash-banner').innerHTML = bannerHtml();
-  const act = S.items.filter(i => !i.deleted);
+  const act = S.items.filter(i => !i.deleted && inCh(i));
   const units = act.reduce((a, i) => a + Math.max(0, i.qty), 0);
   const catsUsed = new Set(act.map(catKey)).size;
-  const last = S.entries.length ? S.entries[0].at : 0;
+  const chEntries = S.entries.filter(e => inCh(e.item));
+  const last = chEntries.length ? chEntries[0].at : 0;
   $('#dash-hero').innerHTML = loading() ? '<div class="hero-sub">กำลังโหลดข้อมูล…</div>'
-    : `<div class="dash-hero-fig"><span class="hero-fig">${fmt(act.length)}</span><span class="hero-fig-lab">รายการในคลัง</span></div>`
+    : `<div class="dash-hero-fig"><span class="hero-fig">${fmt(act.length)}</span><span class="hero-fig-lab">รายการในคลัง${S.v.ch === 'all' ? '' : ' · ' + esc(chName(S.v.ch))}</span></div>`
     + `<p class="hero-sub">รวม <b>${fmt(units)}</b> หน่วย · ${fmt(catsUsed)} หมวด${last ? ` · เคลื่อนไหวล่าสุด ${esc(relTime(last))}` : ''}</p>`;
   const body = $('#dash-body');
   if (loading()) { body.innerHTML = skeleton(3); return; }
@@ -1211,7 +1246,14 @@ ${R.topDest.length ? hbars(R.topDest.map(r => ({ name: r.name, sub: `${fmt(r.n)}
     c.v += Math.max(0, i.qty); c.n++; byCat.set(k, c);
   }
   const catRows = [...byCat.values()].sort((a, b) => b.v - a.v || b.n - a.n);
-  const secCat = `<section class="section"><div class="section-h"><h2>สต็อกตามหมวด</h2></div><div class="panel">
+  let secCh = '';
+  if (S.v.ch === 'all') {
+    const byCh = new Map();
+    for (const i of act) { const k = chKey(i); const c = byCh.get(k) || { id: k, name: chName(k), v: 0, n: 0 }; c.v += Math.max(0, i.qty); c.n++; byCh.set(k, c); }
+    const chRows = [...CHANNELS.map(c => byCh.get(c.id) || { id: c.id, name: c.name, v: 0, n: 0 }), ...(byCh.get('_none') ? [byCh.get('_none')] : [])];
+    secCh = `<section class="section"><div class="section-h"><h2>สต็อกตาม Channel</h2></div><div class="panel">${act.length ? hbars(chRows.map(r => ({ name: r.name, sub: `${fmt(r.n)} รายการ`, v: r.v, val: `${fmt(r.v)} หน่วย` })), 'var(--stock)') : '<p class="panel-empty">ยังไม่มีรายการในคลัง</p>'}</div></section>`;
+  }
+  const secCat = `<section class="section"><div class="section-h"><h2>สต็อกตามหมวด${S.v.ch === 'all' ? '' : ' · ' + esc(chName(S.v.ch))}</h2></div><div class="panel">
 ${catRows.length ? hbars(catRows.map(r => ({ name: r.name, sub: `${fmt(r.n)} รายการ`, v: r.v, val: `${fmt(r.v)} หน่วย` })), 'var(--stock)') : '<p class="panel-empty">ยังไม่มีรายการในคลัง</p>'}
 </div></section>`;
 
@@ -1223,7 +1265,7 @@ ${catRows.length ? hbars(catRows.map(r => ({ name: r.name, sub: `${fmt(r.n)} ร
   }).join('');
   const tb = rows.map(i => {
     const st = status(i);
-    return `<tr data-id="${esc(i.id)}" data-act="open" tabindex="0"><td class="code">${esc(i.code) || '—'}</td><td class="nm">${esc(i.name)}</td><td>${esc(catName(i.cat))}</td>`
+    return `<tr data-id="${esc(i.id)}" data-act="open" tabindex="0"><td class="code">${esc(i.code) || '—'}</td><td class="nm">${esc(i.name)}</td><td>${esc(chName(i.ch))}</td><td>${esc(catName(i.cat))}</td>`
       + `<td class="n"><b>${fmt(i.qty)}</b></td><td>${esc(i.unit)}</td><td class="n">${i.min ? fmt(i.min) : '—'}</td>`
       + `<td>${st === 'ok' ? '<span class="muted">ปกติ</span>' : pill(st)}</td><td>${i.loc ? `<span class="bin">${esc(i.loc)}</span>` : '—'}</td>`
       + `<td class="n">${i.lastAt ? D_DMY2.format(i.lastAt) : '—'}</td></tr>`;
@@ -1233,7 +1275,7 @@ ${act.length ? `<div class="tbl-actions"><button type="button" class="btn sm" da
 ${act.length ? `<div class="table-wrap"><table class="dbt"><thead><tr>${th}</tr></thead><tbody>${tb}</tbody></table></div>` : '<div class="panel"><p class="panel-empty">ยังไม่มีข้อมูล เพิ่มรายการที่หน้าสต็อกแล้วตารางจะแสดงที่นี่</p></div>'}
 </section>`;
 
-  body.innerHTML = `<div class="dash-grid"><div class="dash-col">${secStatus}${secCat}</div><div class="dash-col">${secMove}</div></div>${secDb}`;
+  body.innerHTML = `<div class="dash-grid"><div class="dash-col">${secStatus}${secCh}${secCat}</div><div class="dash-col">${secMove}</div></div>${secDb}`;
   drawFlow();
 }
 function niceMax(v) {
@@ -1333,15 +1375,16 @@ function exportCsv(kind) {
   const stamp = `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
   let rows, filename;
   if (kind === 'items') {
-    rows = [['รหัส', 'ชื่อรายการ', 'หมวดหมู่', 'คงเหลือ', 'หน่วย', 'จุดแจ้งเตือน', 'สถานะ', 'ที่เก็บ', 'หมายเหตุ', 'เคลื่อนไหวล่าสุด']];
-    for (const i of sortedTable(S.items.filter(x => !x.deleted))) {
-      rows.push([safeCell(i.code), safeCell(i.name), safeCell(catName(i.cat)), i.qty, safeCell(i.unit), i.min, ST_LABEL[status(i)], safeCell(i.loc), safeCell(i.note), i.lastAt ? isoLocal(i.lastAt) : '']);
+    rows = [['รหัส', 'ชื่อรายการ', 'Channel', 'หมวดหมู่', 'คงเหลือ', 'หน่วย', 'จุดแจ้งเตือน', 'สถานะ', 'ที่เก็บ', 'หมายเหตุ', 'เคลื่อนไหวล่าสุด']];
+    for (const i of sortedTable(S.items.filter(x => !x.deleted && inCh(x)))) {
+      rows.push([safeCell(i.code), safeCell(i.name), chName(i.ch), safeCell(catName(i.cat)), i.qty, safeCell(i.unit), i.min, ST_LABEL[status(i)], safeCell(i.loc), safeCell(i.note), i.lastAt ? isoLocal(i.lastAt) : '']);
     }
     filename = `hq-stock-${stamp}.csv`;
   } else {
-    rows = [['วันที่เวลา', 'ประเภท', 'รหัส', 'ชื่อรายการ', 'จำนวน', 'หน่วย', 'ปลายทาง/ต้นทาง', 'ผู้เบิก', 'หมายเหตุ', 'บันทึกโดย', 'สถานะ']];
+    rows = [['วันที่เวลา', 'ประเภท', 'Channel', 'รหัส', 'ชื่อรายการ', 'จำนวน', 'หน่วย', 'ปลายทาง/ต้นทาง', 'ผู้เบิก', 'หมายเหตุ', 'บันทึกโดย', 'สถานะ']];
     for (const e of S.entries) {
-      rows.push([isoLocal(e.at), TYPE[e.type].label, safeCell(e.item.code), safeCell(e.item.name), delta(e), safeCell(e.item.unit),
+      if (!inCh(e.item)) continue;
+      rows.push([isoLocal(e.at), TYPE[e.type].label, chName(e.item.ch), safeCell(e.item.code), safeCell(e.item.name), delta(e), safeCell(e.item.unit),
         safeCell(e.type === 'out' ? e.to : e.from), safeCell(e.person), safeCell(e.note), safeCell(e.by), e.void ? 'ยกเลิก' : '']);
     }
     filename = `hq-stock-history-${stamp}.csv`;
@@ -1465,7 +1508,7 @@ SHEETS.detail = {
     else if (i.photo) photo = `<div class="d-photo"><img src="${esc(photoUrl(i.photo, 1400))}" alt="รูป ${esc(i.name)}" referrerpolicy="no-referrer"></div>`;
     else if (w) photo = `<label class="d-photo empty add">${svg('camera', 28, 1.7)}<span>เพิ่มรูป</span><input type="file" accept="image/*" class="file-cover" data-photo="detail" aria-label="ถ่ายหรือเลือกรูปของรายการนี้"></label>`;
     else photo = `<div class="d-photo empty">${svg('image', 28, 1.6)}<span>ยังไม่มีรูป</span></div>`;
-    const tags = `<div class="d-tags"><span class="cat-badge">${esc(catName(i.cat))}</span>${i.code ? `<span class="code">${esc(i.code)}</span>` : ''}${i.loc ? `<span class="bin">${esc(i.loc)}</span>` : ''}</div>`;
+    const tags = `<div class="d-tags"><span class="ch-badge">${esc(chName(i.ch))}</span><span class="cat-badge">${esc(catName(i.cat))}</span>${i.code ? `<span class="code">${esc(i.code)}</span>` : ''}${i.loc ? `<span class="bin">${esc(i.loc)}</span>` : ''}</div>`;
     const qty = `<div class="d-qty"><div><div class="d-qty-n">${fmt(i.qty)} <span class="d-qty-u">${esc(i.unit)}</span></div><div class="d-qty-l">คงเหลือในคลัง</div></div>`
       + `<div class="d-qty-side">${st !== 'ok' ? pill(st) : '<span class="pill ok">พร้อมใช้</span>'}<span class="muted small">${i.min > 0 ? `แจ้งเตือนเมื่อเหลือ ${fmt(i.min)} ${esc(i.unit)}` : 'ไม่ได้ตั้งจุดแจ้งเตือน'}</span></div></div>`;
     const actions = w ? `<div class="d-actions"><button type="button" class="btn big out" data-act="out">${svg('out', 22)}<span>เบิกออก</span></button><button type="button" class="btn big in" data-act="in">${svg('in', 22)}<span>รับเข้า</span></button></div>`
@@ -1616,6 +1659,7 @@ SHEETS.form = {
     const locs = uniq(S.items.slice().sort((a, b) => b.lastAt - a.lastAt).map(i => i.loc), 40);
     const fields = `${photo}
 <div class="field"><label class="lab" for="f-name">ชื่อรายการ <span class="req">*</span></label><input class="input" id="f-name" data-f="name" maxlength="120" autocomplete="off" placeholder="เช่น Security tether USB-C" value="${esc(p.name)}"></div>
+<div class="field"><span class="lab" id="lab-ch">Channel <span class="req">*</span></span><div class="seg" role="group" aria-labelledby="lab-ch">${CHANNELS.map(c => `<button type="button" data-fch="${c.id}" aria-pressed="${p.ch === c.id}">${esc(c.name)}</button>`).join('')}</div></div>
 <div class="field"><label class="lab" for="f-cat">หมวดหมู่ <span class="req">*</span></label>${catSel}</div>
 <div class="grid2">
 <div class="field"><label class="lab" for="f-code">รหัส / SKU<span class="opt">ไม่บังคับ</span></label><input class="input" id="f-code" data-f="code" maxlength="40" autocomplete="off" autocapitalize="characters" value="${esc(p.code)}"></div>
@@ -1652,9 +1696,9 @@ function saveFormFields(p) { $$('[data-f]', sheetEl).forEach(el => { p[el.datase
 function formProps(i) {
   if (!i) {
     const cat = S.v.cat !== 'all' && S.cats[S.v.cat] && !S.cats[S.v.cat].hidden ? S.v.cat : '';
-    return { mode: 'new', name: '', cat, newCat: '', code: '', unit: 'ชิ้น', qty0: '', min: '', loc: '', note: '', err: '' };
+    return { mode: 'new', ch: S.v.ch !== 'all' ? S.v.ch : '', name: '', cat, newCat: '', code: '', unit: 'ชิ้น', qty0: '', min: '', loc: '', note: '', err: '' };
   }
-  return { mode: 'edit', id: i.id, name: i.name, cat: S.cats[i.cat] ? i.cat : '', newCat: '', code: i.code, unit: i.unit, min: i.min ? String(i.min) : '', loc: i.loc, note: i.note, photo: i.photo, thumb: i.thumb, err: '' };
+  return { mode: 'edit', id: i.id, ch: chKey(i) === '_none' ? '' : i.ch, name: i.name, cat: S.cats[i.cat] ? i.cat : '', newCat: '', code: i.code, unit: i.unit, min: i.min ? String(i.min) : '', loc: i.loc, note: i.note, photo: i.photo, thumb: i.thumb, err: '' };
 }
 function formFail(p, msg, focusId) {
   p.err = msg; p.saving = false;
@@ -1668,6 +1712,7 @@ async function saveForm(p) {
   const name = str(p.name).trim();
   if (!name) return formFail(p, 'ใส่ชื่อรายการก่อนบันทึก', 'f-name');
   if (p.cat === '__new' && !str(p.newCat).trim()) return formFail(p, 'ใส่ชื่อหมวดใหม่ หรือเลือกหมวดที่มีอยู่', 'f-newcat');
+  if (!p.ch) return formFail(p, 'เลือก Channel: iStudio, U-Store หรือ AIS + Mobi');
   if (!p.cat) return formFail(p, 'เลือกหมวดหมู่ก่อนบันทึก', 'f-cat');
   const min = str(p.min).trim() === '' ? 0 : toInt(p.min);
   if (!(min >= 0)) return formFail(p, 'จุดแจ้งเตือนต้องเป็นตัวเลข 0 ขึ้นไป', 'f-min');
@@ -1681,7 +1726,7 @@ async function saveForm(p) {
     let photo = null;
     if (p.file) { p.savingText = 'กำลังอัปโหลดรูป…'; drawSheet(false); photo = await encodePhoto(p.file); }
     const item = {
-      name: name.slice(0, 120), cat, code: str(p.code).trim().slice(0, 40), unit: str(p.unit).trim().slice(0, 20) || 'ชิ้น', min,
+      name: name.slice(0, 120), group: p.ch, cat, code: str(p.code).trim().slice(0, 40), unit: str(p.unit).trim().slice(0, 20) || 'ชิ้น', min,
       loc: str(p.loc).trim().slice(0, 80), note: str(p.note).trim().slice(0, 500),
     };
     if (isNew) {
@@ -1831,6 +1876,15 @@ document.addEventListener('click', e => {
     resolveNames();
     return;
   }
+  const chb = t.closest('[data-ch]');
+  if (chb) {
+    S.v.ch = chb.dataset.ch; store.set('ch', S.v.ch);
+    S.v.cat = 'all'; S.v.hConfirm = null;
+    renderAll();
+    return;
+  }
+  const fch = t.closest('[data-fch]');
+  if (fch) { const s = top(); if (s && s.kind === 'form') { saveFormFields(s.props); s.props.ch = fch.dataset.fch; s.props.err = ''; drawSheet(false); } return; }
   const rg = t.closest('[data-range]');
   if (rg) { S.v.range = Number(rg.dataset.range); store.set('range', S.v.range); renderDash(); return; }
   const ts = t.closest('[data-tsort]');
