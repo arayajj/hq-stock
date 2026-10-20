@@ -15,6 +15,15 @@
 <script>
   // ใส่ลิงก์ Web app ของ Apps Script (ลงท้ายด้วย /exec) ระหว่างเครื่องหมายคำพูด
   window.HQ_API_URL = 'https://script.google.com/macros/s/AKfycbxjBHpRBfqo4SWnlxDW6erH5ZVkmYN_DMRlDyuChQv6WUQwQppkYhcnlJ3MOJKrmg7O2Q/exec';
+  // safety net: show start-up errors on screen instead of a blank page
+  window.addEventListener('error', function (e) {
+    if (window.__hqBooted) return;
+    var d = document.getElementById('boot-err') || document.createElement('div');
+    d.id = 'boot-err';
+    d.style.cssText = 'position:fixed;left:12px;right:12px;top:12px;z-index:9999;padding:12px 14px;border-radius:12px;background:#FBE4E4;color:#AE2323;font:14px/1.5 system-ui,sans-serif';
+    d.textContent = 'แอปเปิดไม่สำเร็จ ลองรีเฟรชหน้า ถ้ายังเป็นอยู่ให้แคปหน้าจอนี้ส่งผู้ดูแล: ' + (e.message || e) + ' (' + (e.lineno || '') + ':' + (e.colno || '') + ')';
+    (document.body || document.documentElement).appendChild(d);
+  });
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -685,6 +694,8 @@ function status(i) {
 const ratio = i => (i.min > 0 ? i.qty / i.min : i.qty);
 
 /* ================= state ================= */
+// defined before S: the saved Channel filter is validated against this list during start-up
+const CHANNELS = [{ id: 'istudio', name: 'iStudio' }, { id: 'ustore', name: 'U-Store' }, { id: 'aismobi', name: 'AIS + Mobi' }];
 const TABS = { stock: 'stock', history: 'history', dash: 'dash', dashboard: 'dash' };
 const S = {
   conn: 'loading', auth: null, me: null, connWarn: false, connErr: null,
@@ -745,7 +756,6 @@ function catList(includeHidden) {
   }).filter(c => includeHidden || !c.hidden)
     .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, 'th'));
 }
-const CHANNELS = [{ id: 'istudio', name: 'iStudio' }, { id: 'ustore', name: 'U-Store' }, { id: 'aismobi', name: 'AIS + Mobi' }];
 const chName = id => (CHANNELS.find(c => c.id === id) || { name: 'ไม่ระบุ Channel' }).name;
 const chKey = i => (CHANNELS.some(c => c.id === i.ch) ? i.ch : '_none');
 const inCh = i => S.v.ch === 'all' || chKey(i) === S.v.ch;
@@ -2044,6 +2054,7 @@ window.addEventListener('resize', () => {
 /* ================= boot ================= */
 renderAll();
 connect();
+window.__hqBooted = true;
 })();
 </script>
 </body>
