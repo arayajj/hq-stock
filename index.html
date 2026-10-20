@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>HQ Stock</title>
-<meta name="theme-color" content="#13294B">
+<title>HQ Stock · SPVi</title>
+<meta name="theme-color" content="#1E2353">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21,25 +21,26 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  --bg:#EDF0F4;--surface:#FFFFFF;--surface-2:#F5F7FA;--surface-3:#E7EBF1;
-  --ink:#0E1A2B;--ink-2:#43506A;--muted:#647086;
-  --line:#DAE0E8;--line-2:#C4CCD8;
-  --navy:#13294B;--navy-2:#1D3764;--on-navy:#FFFFFF;--on-navy-2:#C0CBDF;--on-navy-3:#93A3C1;
+  --bg:#EEEFF6;--surface:#FFFFFF;--surface-2:#F5F6FB;--surface-3:#E8EAF3;
+  --ink:#12152F;--ink-2:#464B6B;--muted:#686D8B;
+  --line:#DCDFEC;--line-2:#C6CADD;
+  --navy:#1E2353;--navy-2:#2A3070;--on-navy:#FFFFFF;--on-navy-2:#C3C7E4;--on-navy-3:#9AA0CA;
   --navy-chip:rgba(255,255,255,.07);--navy-chip-line:rgba(255,255,255,.17);
-  --gold:#FFC532;--gold-soft:#FFEBB0;--on-gold:#13294B;
-  --primary:#13294B;--primary-hover:#1D3764;--on-primary:#FFFFFF;
-  --tab-active:#13294B;
-  --tag-bg:#FFF2C4;--tag-ink:#5B4300;--tag-line:#EBCF72;
-  --focus:#2a78d6;
-  --in:#1baf7a;--in-soft:#DCF3EA;--out:#eb6834;--out-soft:#FCE5DA;--adj:#5A6A86;--adj-soft:#E4E9F1;--stock:#2a78d6;
-  --grid:#E5E9EF;--axis:#C4CCD8;--hl:rgba(19,41,75,.06);
+  --gold:#F47E71;--gold-soft:#E4E7F6;--on-gold:#1E2353;
+  --spvi-a:#475AA8;--spvi-b:#F47E71;--spvi-grad:linear-gradient(90deg,#475AA8 0%,#90769B 50%,#D18687 84%,#F47E71 100%);
+  --primary:#475AA8;--primary-hover:#3B4C92;--on-primary:#FFFFFF;
+  --tab-active:#475AA8;
+  --tag-bg:#ECEDFA;--tag-ink:#333A7E;--tag-line:#C9CCEE;
+  --focus:#475AA8;
+  --in:#1baf7a;--in-soft:#DCF3EA;--out:#eb6834;--out-soft:#FCE5DA;--adj:#5E6488;--adj-soft:#E5E7F2;--stock:#475AA8;
+  --grid:#E6E8F0;--axis:#C6CADD;--hl:rgba(71,90,168,.07);
   --good:#0ca30c;--good-ink:#006300;
   --warn:#fab219;--warn-ink:#7A5200;--warn-bg:#FFF1CF;
   --crit:#d03b3b;--crit-ink:#AE2323;--crit-bg:#FBE4E4;
-  --toast-bg:#0E1A2B;--toast-ink:#FFFFFF;--toast-act:#FFC532;
-  --scrim:rgba(9,17,31,.5);
-  --shadow-1:0 1px 2px rgba(14,26,43,.05),0 1px 6px rgba(14,26,43,.04);
-  --shadow-2:0 12px 36px rgba(14,26,43,.22);
+  --toast-bg:#12152F;--toast-ink:#FFFFFF;--toast-act:#F8A59B;
+  --scrim:rgba(12,14,36,.5);
+  --shadow-1:0 1px 2px rgba(18,21,47,.05),0 1px 6px rgba(18,21,47,.04);
+  --shadow-2:0 12px 36px rgba(18,21,47,.22);
   --font:"IBM Plex Sans Thai","IBM Plex Sans",system-ui,-apple-system,"Segoe UI","Noto Sans Thai",Tahoma,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --tabbar-h:66px;
@@ -47,22 +48,22 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#0A111D;--surface:#121B2B;--surface-2:#172235;--surface-3:#1E2B41;
-    --ink:#EDF2F9;--ink-2:#B5C0D1;--muted:#8793A9;
-    --line:#233049;--line-2:#34435F;
-    --navy:#0F1F3B;--navy-2:#18305A;--on-navy:#FFFFFF;--on-navy-2:#AFBDD6;--on-navy-3:#8193B3;
+    --bg:#0B0C1C;--surface:#14162C;--surface-2:#191C36;--surface-3:#212544;
+    --ink:#EEF0FA;--ink-2:#B8BCD6;--muted:#8A8FAE;
+    --line:#252945;--line-2:#363B60;
+    --navy:#161939;--navy-2:#222660;--on-navy:#FFFFFF;--on-navy-2:#B4B9DB;--on-navy-3:#8A90BD;
     --navy-chip:rgba(255,255,255,.06);--navy-chip-line:rgba(255,255,255,.14);
-    --gold:#FFC532;--gold-soft:#4A3B0E;--on-gold:#13294B;
-    --primary:#FFC532;--primary-hover:#FFD35E;--on-primary:#13294B;
-    --tab-active:#FFC532;
-    --tag-bg:#3A3114;--tag-ink:#FFD76E;--tag-line:#5B4B1D;
-    --focus:#6DA7EC;
-    --in:#199e70;--in-soft:#0F2E24;--out:#d95926;--out-soft:#3A1F14;--adj:#9AA8C0;--adj-soft:#1F2A3F;--stock:#3987e5;
-    --grid:#1E293C;--axis:#34435F;--hl:rgba(255,255,255,.05);
+    --gold:#F58C80;--gold-soft:#2A2E58;--on-gold:#161939;
+    --primary:#F58C80;--primary-hover:#F7A095;--on-primary:#161939;
+    --tab-active:#F58C80;
+    --tag-bg:#262A52;--tag-ink:#C6CBFF;--tag-line:#3A3F73;
+    --focus:#8C9BEA;
+    --in:#199e70;--in-soft:#0F2E24;--out:#d95926;--out-soft:#3A1F14;--adj:#A0A6C6;--adj-soft:#222644;--stock:#8394E4;
+    --grid:#1F2340;--axis:#363B60;--hl:rgba(255,255,255,.05);
     --good-ink:#46CF46;
     --warn-ink:#FFC94D;--warn-bg:#3A2E0F;
     --crit-ink:#FF8E8E;--crit-bg:#3E1719;
-    --toast-bg:#E9EEF6;--toast-ink:#0E1A2B;--toast-act:#13294B;
+    --toast-bg:#E9EBF7;--toast-ink:#12152F;--toast-act:#475AA8;
     --scrim:rgba(0,0,0,.62);
     --shadow-1:0 1px 2px rgba(0,0,0,.3);
     --shadow-2:0 14px 40px rgba(0,0,0,.55);
@@ -70,22 +71,22 @@
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#0A111D;--surface:#121B2B;--surface-2:#172235;--surface-3:#1E2B41;
-  --ink:#EDF2F9;--ink-2:#B5C0D1;--muted:#8793A9;
-  --line:#233049;--line-2:#34435F;
-  --navy:#0F1F3B;--navy-2:#18305A;--on-navy:#FFFFFF;--on-navy-2:#AFBDD6;--on-navy-3:#8193B3;
+  --bg:#0B0C1C;--surface:#14162C;--surface-2:#191C36;--surface-3:#212544;
+  --ink:#EEF0FA;--ink-2:#B8BCD6;--muted:#8A8FAE;
+  --line:#252945;--line-2:#363B60;
+  --navy:#161939;--navy-2:#222660;--on-navy:#FFFFFF;--on-navy-2:#B4B9DB;--on-navy-3:#8A90BD;
   --navy-chip:rgba(255,255,255,.06);--navy-chip-line:rgba(255,255,255,.14);
-  --gold:#FFC532;--gold-soft:#4A3B0E;--on-gold:#13294B;
-  --primary:#FFC532;--primary-hover:#FFD35E;--on-primary:#13294B;
-  --tab-active:#FFC532;
-  --tag-bg:#3A3114;--tag-ink:#FFD76E;--tag-line:#5B4B1D;
-  --focus:#6DA7EC;
-  --in:#199e70;--in-soft:#0F2E24;--out:#d95926;--out-soft:#3A1F14;--adj:#9AA8C0;--adj-soft:#1F2A3F;--stock:#3987e5;
-  --grid:#1E293C;--axis:#34435F;--hl:rgba(255,255,255,.05);
+  --gold:#F58C80;--gold-soft:#2A2E58;--on-gold:#161939;
+  --primary:#F58C80;--primary-hover:#F7A095;--on-primary:#161939;
+  --tab-active:#F58C80;
+  --tag-bg:#262A52;--tag-ink:#C6CBFF;--tag-line:#3A3F73;
+  --focus:#8C9BEA;
+  --in:#199e70;--in-soft:#0F2E24;--out:#d95926;--out-soft:#3A1F14;--adj:#A0A6C6;--adj-soft:#222644;--stock:#8394E4;
+  --grid:#1F2340;--axis:#363B60;--hl:rgba(255,255,255,.05);
   --good-ink:#46CF46;
   --warn-ink:#FFC94D;--warn-bg:#3A2E0F;
   --crit-ink:#FF8E8E;--crit-bg:#3E1719;
-  --toast-bg:#E9EEF6;--toast-ink:#0E1A2B;--toast-act:#13294B;
+  --toast-bg:#E9EBF7;--toast-ink:#12152F;--toast-act:#475AA8;
   --scrim:rgba(0,0,0,.62);
   --shadow-1:0 1px 2px rgba(0,0,0,.3);
   --shadow-2:0 14px 40px rgba(0,0,0,.55);
@@ -115,11 +116,15 @@ h1,h2,h3{text-wrap:balance}
 .link.danger{color:var(--crit-ink)}
 
 /* ---------- header (navy control zone) ---------- */
-.hero{background:var(--navy);color:var(--on-navy);padding:18px 16px 12px}
+.hero{position:relative;background:var(--navy);color:var(--on-navy);padding:21px 16px 12px}
+.hero::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--spvi-grad)}
 .hero-inner,.bar-inner,.wrap-inner{max-width:1080px;margin-inline:auto}
 .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:11px;min-width:0}
-.brand-mark{width:36px;height:36px;border-radius:10px;background:var(--gold);color:var(--on-gold);display:grid;place-items:center;flex:none}
+.brand-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--spvi-a),var(--spvi-b));color:#fff;display:grid;place-items:center;flex:none}
+.spvi{display:block;flex:none;fill:currentColor}
+.brand-logo{width:64px;height:auto;color:#fff}
+.brand-div{flex:none;align-self:stretch;width:1px;margin-block:3px;background:var(--navy-chip-line)}
 .brand-name{font-size:18px;font-weight:700;line-height:1.2;letter-spacing:.005em}
 .brand-sub{font-size:12.5px;color:var(--on-navy-2);line-height:1.35}
 .icon-btn{width:40px;height:40px;flex:none;border:0;border-radius:12px;background:transparent;color:inherit;display:grid;place-items:center}
@@ -229,7 +234,7 @@ h1,h2,h3{text-wrap:balance}
 .btn.big.out .ic{color:var(--out)}
 
 /* ---------- FAB + tab bar + toast ---------- */
-.fab{position:fixed;z-index:30;right:max(16px,calc((100vw - 1080px) / 2 + 16px));bottom:calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:8px;height:54px;padding:0 22px 0 17px;border:0;border-radius:17px;background:var(--gold);color:var(--on-gold);font-size:15.5px;font-weight:700;box-shadow:0 8px 22px rgba(19,41,75,.3)}
+.fab{position:fixed;z-index:30;right:max(16px,calc((100vw - 1080px) / 2 + 16px));bottom:calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:8px;height:54px;padding:0 22px 0 17px;border:0;border-radius:17px;background:var(--gold);color:var(--on-gold);font-size:15.5px;font-weight:700;box-shadow:0 8px 22px rgba(30,35,83,.32)}
 .fab:hover{filter:brightness(1.04)}
 .tabbar{position:fixed;z-index:40;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line)}
 .tabbar-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;width:100%;max-width:520px}
@@ -245,10 +250,13 @@ h1,h2,h3{text-wrap:balance}
 /* ---------- sheet (dialog) ---------- */
 dialog.sheet{position:fixed;display:flex;flex-direction:column;width:100%;max-width:640px;max-height:92vh;max-height:92dvh;margin:auto auto 0;padding:0;border:0;border-radius:22px 22px 0 0;background:var(--surface);color:var(--ink);box-shadow:var(--shadow-2);overflow:hidden}
 dialog.sheet:not([open]){display:none}
+dialog.sheet{max-height:calc(var(--app-h,100vh) * .92)}
+dialog.sheet[data-kind="form"]{height:calc(var(--app-h,100vh) * .92)}
+html.sheet-open,html.sheet-open body{overflow:hidden}
 dialog.sheet::backdrop{background:var(--scrim)}
 dialog.sheet[open]{animation:sheet-up .24s cubic-bezier(.2,.8,.2,1)}
 @keyframes sheet-up{from{transform:translateY(28px);opacity:.4}}
-@media (min-width:720px){dialog.sheet{margin:auto;border-radius:22px;max-height:88vh;max-height:88dvh}}
+@media (min-width:720px){dialog.sheet{margin:auto;border-radius:22px;max-height:calc(var(--app-h,100vh) * .88)}dialog.sheet[data-kind]{height:auto}}
 @media (prefers-reduced-motion:reduce){dialog.sheet[open]{animation:none}}
 .sheet-head{display:flex;align-items:center;gap:8px;padding:16px 8px 10px 18px;flex:none;position:relative}
 .sheet-head::before{content:"";position:absolute;top:6px;left:50%;width:38px;height:4px;margin-left:-19px;border-radius:4px;background:var(--line-2)}
@@ -338,6 +346,8 @@ select.input{appearance:none;-webkit-appearance:none;padding-right:36px;backgrou
 .cat-row .input{min-height:44px}
 .cat-add{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
 .cat-add .input{min-height:46px}
+.loc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:36px;padding:4px 2px;border-bottom:1px solid var(--line)}
+.loc-row:last-child{border-bottom:0}
 .del-list{display:grid;gap:8px}
 .del-row{display:flex;align-items:center;gap:12px;padding:8px;border:1px solid var(--line);border-radius:12px}
 .del-t{flex:1;min-width:0}
@@ -462,12 +472,13 @@ button.tile:hover{background:var(--surface-2)}
 .chsw-b:hover{background:rgba(255,255,255,.08)}
 .chsw-b[aria-pressed="true"]{background:var(--gold);color:var(--on-gold)}
 .chsw-b[aria-pressed="true"] .n{color:var(--on-gold);opacity:.72}
-.ch-badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;background:var(--navy);color:#fff;font-size:12.5px;font-weight:600}
+.ch-badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;background:var(--spvi-a);color:#fff;font-size:12.5px;font-weight:600}
 .group-h.ch{font-size:15px;color:var(--ink);margin-top:24px}
 /* ---------- login gate ---------- */
 .gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow-y:auto;padding:24px 16px calc(24px + env(safe-area-inset-bottom,0px));background:var(--navy)}
 .gate-card{display:grid;gap:14px;width:100%;max-width:400px;padding:26px 22px 22px;border-radius:22px;background:var(--surface);box-shadow:var(--shadow-2)}
-.gate-mark{width:48px;height:48px;border-radius:14px}
+.gate-logo{width:112px;height:auto;margin-bottom:2px;fill:url(#spvi-g)}
+.gate::before{content:"";position:fixed;inset:0 0 auto;height:4px;background:var(--spvi-grad)}
 .gate-title{font-size:24px;font-weight:700;line-height:1.2}
 .gate-sub{margin-top:-8px;font-size:14px;color:var(--ink-2)}
 .gate .btn{width:100%}
@@ -476,12 +487,14 @@ button.tile:hover{background:var(--surface-2)}
 
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="spvi-g" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="36720" y2="0"><stop offset="0" stop-color="#475AA8"/><stop offset="0.5" stop-color="#90769B"/><stop offset="0.68" stop-color="#B98391"/><stop offset="0.84" stop-color="#D18687"/><stop offset="1" stop-color="#F47E71"/></linearGradient><symbol id="spvi-logo" viewBox="0 0 3672 984"><g transform="translate(0,984) scale(.1,-.1)"><path d="M5555 9410 l-3200 -5 -130 -28 c-128 -27 -147 -32 -295 -82 -83 -27 -181 -66 -226 -90 -16 -8 -32 -15 -35 -15 -26 0 -353 -203 -380 -236 -7 -9 -32 -28 -53 -42 -52 -32 -221 -197 -277 -269 -24 -31 -62 -77 -84 -103 -37 -44 -77 -103 -116 -171 -9 -16 -21 -34 -27 -41 -17 -22 -102 -191 -102 -203 0 -7 -6 -18 -14 -24 -8 -7 -18 -27 -22 -44 -3 -17 -12 -41 -19 -52 -7 -11 -16 -36 -20 -55 -4 -19 -13 -44 -20 -55 -7 -11 -16 -40 -20 -65 -4 -25 -13 -57 -21 -71 -7 -14 -16 -50 -19 -80 -4 -30 -15 -79 -25 -110 -11 -31 -22 -80 -26 -110 -3 -30 -15 -68 -25 -85 -26 -42 -29 -346 -4 -381 8 -12 22 -57 30 -100 8 -43 19 -89 25 -103 5 -14 16 -59 24 -100 20 -104 53 -221 65 -233 6 -6 11 -20 11 -32 0 -11 9 -38 19 -59 11 -21 23 -51 26 -66 3 -16 13 -34 21 -41 8 -6 14 -16 14 -22 0 -29 82 -179 171 -314 108 -165 335 -412 435 -475 22 -14 46 -33 54 -43 55 -67 405 -261 590 -327 52 -18 85 -29 248 -79 103 -31 191 -59 257 -79 108 -33 199 -61 248 -75 26 -8 52 -17 59 -21 6 -4 35 -13 62 -20 28 -7 71 -20 96 -28 25 -8 106 -34 180 -56 74 -23 153 -47 175 -54 22 -8 81 -26 130 -41 50 -15 115 -35 145 -45 30 -9 89 -27 130 -40 41 -13 100 -31 130 -40 110 -35 188 -59 315 -98 72 -22 191 -59 265 -82 74 -23 164 -51 200 -62 36 -11 90 -28 120 -38 30 -10 89 -28 130 -40 102 -30 194 -59 260 -80 30 -9 89 -27 130 -40 41 -13 100 -31 130 -41 30 -9 116 -36 190 -59 74 -23 153 -47 175 -54 22 -8 81 -26 130 -41 50 -14 108 -32 130 -40 22 -7 81 -25 130 -40 50 -14 108 -32 130 -40 22 -7 81 -25 130 -40 50 -14 115 -34 145 -44 30 -10 89 -28 130 -41 77 -23 135 -41 250 -78 36 -12 155 -48 265 -82 110 -33 218 -67 240 -74 22 -8 81 -26 130 -41 50 -14 108 -32 130 -40 22 -7 81 -25 130 -40 50 -14 108 -32 130 -39 22 -8 78 -25 125 -40 47 -14 141 -43 210 -65 69 -21 186 -57 260 -80 74 -23 162 -50 195 -61 33 -10 121 -37 195 -60 74 -23 149 -46 165 -51 17 -6 68 -22 115 -35 140 -42 207 -96 250 -203 54 -138 -10 -285 -157 -357 l-58 -29 -4195 -5 -4195 -5 -35 -22 c-43 -26 -79 -65 -111 -118 l-24 -40 0 -705 0 -705 24 -40 c42 -70 92 -114 145 -130 76 -23 7350 -22 7543 0 524 61 976 289 1351 680 118 123 147 159 252 315 161 239 288 562 335 855 8 49 22 107 31 129 35 90 36 390 0 482 -9 21 -22 80 -31 129 -43 260 -129 498 -275 763 -107 194 -344 466 -540 619 -254 200 -471 307 -865 428 -82 25 -208 64 -280 86 -71 22 -148 46 -170 53 -22 8 -80 26 -130 41 -49 14 -108 32 -130 40 -22 7 -80 25 -130 40 -49 14 -108 32 -130 40 -22 7 -80 25 -130 40 -49 14 -108 32 -130 40 -22 8 -107 34 -190 60 -82 25 -206 64 -275 85 -69 22 -186 58 -260 80 -74 22 -153 47 -175 54 -22 8 -80 26 -130 41 -49 14 -108 32 -130 40 -22 7 -80 25 -130 40 -49 14 -108 32 -130 40 -22 7 -80 25 -130 40 -49 15 -146 45 -215 67 -69 21 -153 47 -188 58 -34 11 -90 28 -125 39 -75 23 -274 85 -457 141 -74 23 -153 47 -175 55 -22 7 -80 25 -130 40 -117 35 -207 63 -275 85 -30 9 -89 27 -130 40 -41 13 -100 31 -130 41 -30 9 -116 36 -190 58 -74 23 -162 50 -195 60 -33 11 -121 38 -195 61 -74 23 -153 48 -175 55 -22 7 -80 25 -130 40 -49 14 -108 32 -130 40 -22 7 -80 25 -130 40 -49 14 -108 32 -130 40 -22 7 -80 25 -130 40 -49 14 -115 34 -145 44 -30 10 -89 29 -130 41 -41 13 -100 31 -130 40 -30 10 -89 28 -130 40 -41 13 -91 29 -110 36 -19 8 -53 18 -75 23 -39 10 -110 31 -170 52 -16 6 -55 18 -85 26 -174 48 -280 162 -280 303 0 104 82 224 187 272 l48 23 4187 1 4186 1 46 23 c53 25 112 92 126 141 6 20 10 314 10 724 0 410 -4 704 -10 724 -13 48 -73 116 -123 140 -55 27 -203 28 -4402 21z M12310 9409 c-94 -12 -154 -53 -205 -139 -11 -19 -26 -43 -32 -55 -10 -15 -12 -171 -10 -701 l2 -680 28 -33 c15 -18 27 -38 27 -46 0 -16 68 -78 112 -102 32 -17 188 -18 3783 -21 3700 -2 3751 -2 3815 -22 126 -38 224 -123 287 -248 l38 -77 0 -1030 c0 -962 -1 -1036 -18 -1115 -118 -546 -496 -936 -1041 -1073 -80 -20 -113 -21 -2546 -27 -2752 -7 -2512 -1 -2798 -75 -620 -159 -1147 -588 -1432 -1165 -107 -216 -154 -354 -196 -575 -8 -44 -24 -114 -36 -155 -27 -96 -40 -454 -36 -1017 l3 -392 28 -28 c15 -16 27 -35 27 -42 0 -27 98 -108 144 -120 31 -8 256 -11 724 -11 774 0 740 -3 815 80 74 82 71 43 77 842 l5 716 30 44 c17 23 51 56 75 73 l45 30 2535 6 c2757 6 2586 2 2865 59 488 101 945 312 1331 615 132 103 430 405 525 530 180 238 313 465 414 705 15 36 35 83 45 105 9 22 21 55 25 73 4 18 13 45 21 60 8 15 14 33 14 39 0 7 8 39 19 70 30 95 78 319 106 497 16 101 32 156 46 156 5 0 9 272 9 681 0 452 -3 678 -10 674 -15 -9 -26 29 -44 146 -9 57 -23 133 -31 169 -8 36 -15 75 -15 86 0 12 -7 44 -15 70 -8 27 -21 76 -30 109 -30 119 -45 171 -60 202 -8 17 -15 37 -15 45 -1 7 -9 31 -20 53 -11 22 -19 46 -20 53 0 8 -6 26 -14 40 -8 15 -24 50 -36 77 -293 670 -864 1250 -1535 1557 -335 154 -613 232 -990 280 -111 13 -6729 21 -6835 7z M23952 9409 c-57 -7 -129 -54 -164 -106 -10 -16 -31 -47 -46 -71 -16 -23 -31 -39 -35 -36 -15 15 -8 -6149 7 -6177 7 -14 21 -70 31 -125 10 -54 22 -110 26 -123 5 -12 16 -68 24 -123 9 -55 19 -107 24 -116 5 -10 12 -37 16 -62 8 -48 92 -308 105 -325 4 -5 11 -21 15 -35 4 -14 36 -83 72 -155 595 -1207 1981 -1785 3263 -1359 507 169 936 474 1280 910 8 10 609 811 1335 1779 3714 4949 4299 5727 4328 5747 26 19 45 23 102 23 79 0 108 -15 154 -83 l26 -37 5 -565 5 -565 27 -41 c42 -65 103 -112 162 -124 35 -7 274 -10 732 -8 l679 3 48 28 c26 15 62 48 80 73 17 25 44 60 60 76 l27 31 -1 681 0 681 -62 80 c-46 60 -75 86 -112 105 l-50 25 -1340 0 c-1428 0 -1443 0 -1682 -50 -544 -111 -995 -355 -1388 -749 -130 -130 -186 -198 -409 -496 -143 -190 -271 -361 -286 -380 -15 -19 -285 -379 -601 -800 -315 -421 -1338 -1784 -2272 -3030 -935 -1246 -1709 -2278 -1721 -2293 -179 -242 -412 -326 -618 -224 -119 59 -200 151 -245 279 -17 51 -18 215 -23 3818 l-5 3765 -33 47 c-86 123 -60 119 -837 116 -357 -1 -674 -5 -703 -9z M23700 9342 c0 -12 -3 -22 -7 -22 -9 0 -33 -48 -33 -66 0 -7 -6 -14 -12 -16 -10 -4 -13 -640 -13 -3138 0 -2498 3 -3134 13 -3137 8 -3 12 -26 12 -64 0 -77 21 -252 31 -259 4 -3 9 -23 11 -45 2 -22 2 30 0 115 -4 145 -17 255 -22 190 -12 -134 -14 504 -10 3210 3 1730 6 3139 8 3133 1 -7 6 -13 11 -13 8 0 23 121 15 129 -2 2 -4 -5 -4 -17z M36340 9300 c0 -26 3 -30 13 -21 8 6 17 8 20 4 9 -8 9 -1460 1 -1490 -4 -13 -13 -23 -20 -23 -9 0 -14 -11 -14 -31 0 -51 34 -35 38 19 2 23 7 40 12 37 18 -11 21 122 18 788 -2 499 -6 690 -14 695 -7 4 -13 16 -15 27 -7 36 -39 31 -39 -5z M12018 9298 c-2 -13 -9 -22 -16 -20 -6 1 -12 -7 -12 -18 0 -11 -6 -20 -14 -20 -24 0 -26 -52 -26 -720 0 -682 1 -715 29 -723 15 -4 32 -30 45 -69 3 -10 10 -18 16 -18 16 0 12 37 -5 44 -14 5 -15 93 -13 786 2 429 2 780 1 780 -1 0 -3 -10 -5 -22z M362 7692 c-6 -15 -15 -69 -18 -120 -5 -67 -11 -92 -20 -92 -12 0 -14 -55 -14 -300 0 -245 2 -300 14 -300 9 0 15 -25 20 -94 3 -52 13 -107 21 -123 14 -26 15 -19 14 97 -1 69 -4 115 -6 103 -25 -132 -45 369 -24 592 6 63 8 67 18 45 10 -20 12 -2 12 98 1 67 0 122 -2 122 -1 0 -8 -13 -15 -28z M21981 6783 c0 -54 4 -107 9 -118 l9 -20 1 20 c1 15 4 12 11 -10 11 -36 10 -1581 -1 -1645 -4 -25 -8 -35 -9 -22 0 13 -5 20 -11 17 -12 -8 -13 -232 -1 -239 11 -7 18 35 27 164 4 59 12 108 18 112 16 10 16 1586 0 1596 -6 4 -14 36 -17 72 -17 192 -37 233 -36 73z M34689 6715 c-54 -17 -104 -62 -142 -127 l-27 -47 0 -2946 0 -2946 24 -48 c28 -53 81 -105 135 -130 45 -20 1324 -30 1417 -11 71 15 125 53 179 128 25 34 50 62 55 62 7 0 10 1007 10 2934 l0 2933 -27 30 c-16 17 -43 52 -62 77 -19 26 -55 59 -80 74 l-46 27 -695 2 c-579 2 -703 0 -741 -12z M36340 6621 c0 -20 5 -31 15 -31 8 0 16 -13 20 -32 3 -18 4 -1367 3 -2998 -3 -2817 -4 -2965 -20 -2962 -14 2 -18 -4 -18 -33 0 -19 3 -35 6 -35 11 0 33 34 34 52 0 9 6 18 13 20 13 5 25 5804 12 5916 -4 29 -10 50 -15 47 -5 -3 -10 14 -12 37 -4 54 -38 70 -38 19z M10301 3180 c0 -90 2 -102 13 -87 13 17 14 16 19 -5 8 -35 9 -668 1 -738 -6 -59 -18 -77 -27 -42 -3 9 -5 -30 -4 -88 0 -58 2 -95 4 -82 2 12 8 22 12 22 5 0 12 32 15 71 8 81 14 101 27 93 5 -3 9 47 9 115 0 114 1 121 20 121 19 0 20 7 20 140 0 133 -1 140 -20 140 -19 0 -20 7 -20 99 0 59 -4 101 -10 103 -6 2 -16 46 -22 98 -6 52 -15 97 -19 100 -3 3 -9 14 -12 25 -2 11 -5 -27 -6 -85z M12022 2263 c-6 -54 -16 -99 -22 -101 -6 -2 -10 -37 -10 -83 0 -72 -2 -79 -20 -79 -20 0 -20 -7 -20 -680 0 -673 0 -680 20 -680 13 0 20 -7 20 -20 0 -11 4 -20 9 -20 5 0 12 -18 16 -40 4 -25 12 -40 21 -40 19 0 18 29 -1 36 -14 6 -15 99 -15 818 1 790 3 873 21 844 5 -8 9 18 9 65 0 107 -14 97 -28 -20z"/></g></symbol></defs></svg>
 <div id="app">
   <section class="view" id="v-stock" hidden>
     <header class="hero"><div class="hero-inner">
       <div class="brand-row">
         <div class="brand">
-          <span class="brand-mark" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="12" width="7.5" height="7.5" rx="1.3"/><rect x="13" y="12" width="7.5" height="7.5" rx="1.3"/><rect x="8.25" y="4" width="7.5" height="7.5" rx="1.3"/></svg></span>
+          <svg class="spvi brand-logo" viewBox="0 0 3672 984" role="img" aria-label="SPVi"><use href="#spvi-logo"/></svg>
+          <span class="brand-div" aria-hidden="true"></span>
           <div><h1 class="brand-name">HQ Stock</h1><p class="brand-sub">คลังอุปกรณ์สำนักงานใหญ่</p></div>
         </div>
         <button type="button" class="icon-btn on-navy" data-act="settings" aria-label="ตั้งค่า"><svg class="ic" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button>
@@ -570,13 +583,13 @@ button.tile:hover{background:var(--surface-2)}
 
 <div class="gate" id="gate" hidden>
   <form class="gate-card" id="gate-form" novalidate>
-    <span class="brand-mark gate-mark" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="12" width="7.5" height="7.5" rx="1.3"/><rect x="13" y="12" width="7.5" height="7.5" rx="1.3"/><rect x="8.25" y="4" width="7.5" height="7.5" rx="1.3"/></svg></span>
+    <svg class="spvi gate-logo" viewBox="0 0 3672 984" role="img" aria-label="SPVi" fill="url(#spvi-g)"><use href="#spvi-logo"/></svg>
     <h1 class="gate-title">HQ Stock</h1>
     <p class="gate-sub">คลังอุปกรณ์สำนักงานใหญ่ · ใส่ชื่อของคุณและ PIN ของทีมเพื่อเริ่มใช้งาน</p>
     <div class="field"><label class="lab" for="g-name">ชื่อของคุณ</label><input class="input" id="g-name" autocomplete="name" maxlength="60" placeholder="เช่น Gil" enterkeyhint="next"></div>
     <div class="field"><label class="lab" for="g-pin">PIN ของทีม</label><input class="input" id="g-pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="20" enterkeyhint="go"></div>
     <p class="form-err" id="g-err" role="alert"></p>
-    <button type="submit" class="btn gold" id="g-go">เข้าใช้งาน</button>
+    <button type="submit" class="btn primary" id="g-go">เข้าใช้งาน</button>
     <p class="hint">เครื่องนี้จะจำไว้ ครั้งต่อไปไม่ต้องใส่ใหม่</p>
   </form>
 </div>
@@ -676,7 +689,7 @@ const TABS = { stock: 'stock', history: 'history', dash: 'dash', dashboard: 'das
 const S = {
   conn: 'loading', auth: null, me: null, connWarn: false, connErr: null,
   lastWriteDone: 0, syncedAt: 0, sheetUrl: '',
-  raw: new Map(), cats: {}, itemsReady: false, catsReady: false,
+  raw: new Map(), cats: {}, locs: [], itemsReady: false, catsReady: false,
   items: [], byId: new Map(), entries: [],
   scroll: {}, bins: null,
   v: {
@@ -764,6 +777,7 @@ function applyState(st) {
   S.raw = m;
   S.cats = st.cats && typeof st.cats === 'object' ? st.cats : {};
   S.sheetUrl = str(st.sheetUrl);
+  S.locs = Array.isArray(st.locs) ? st.locs.map(str).filter(Boolean) : [];
   S.itemsReady = true;
   S.catsReady = true;
   S.syncedAt = Date.now();
@@ -1415,13 +1429,38 @@ function toast(msg, action) {
 function hideToast() { toastEl.hidden = true; }
 
 /* ================= sheets ================= */
+// iOS (esp. home-screen app): after the keyboard closes, vh/dvh and fixed positioning can stay at the
+// keyboard-shrunk size, leaving the bottom sheet squashed. Track a stable app height ourselves.
+const isTyping = () => { const a = document.activeElement; return !!a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName); };
+let appH = 0;
+function setAppH(force) {
+  const h = Math.round(Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0));
+  if (!h) return;
+  if (force || !isTyping() || h > appH) { appH = h; document.documentElement.style.setProperty('--app-h', h + 'px'); }
+}
+setAppH(true);
+window.addEventListener('resize', () => setAppH(false));
+window.addEventListener('orientationchange', () => setTimeout(() => setAppH(true), 350));
+if (window.visualViewport) window.visualViewport.addEventListener('resize', () => setAppH(false));
+document.addEventListener('focusout', () => {
+  // keyboard closed: put the viewport back where iOS left it and re-measure
+  setTimeout(() => {
+    if (isTyping()) return;
+    if (window.visualViewport && window.visualViewport.offsetTop) window.scrollTo(window.scrollX, window.scrollY);
+    setAppH(true);
+  }, 260);
+});
 const stack = [];
 const SHEETS = {};
 const top = () => stack[stack.length - 1];
 function openSheet(kind, props) {
   stack.push({ kind, props: props || {} });
   drawSheet(true);
-  if (!sheetEl.open) { try { sheetEl.showModal(); } catch (e) { sheetEl.setAttribute('open', ''); } }
+  if (!sheetEl.open) {
+    setAppH(true);
+    document.documentElement.classList.add('sheet-open');
+    try { sheetEl.showModal(); } catch (e) { sheetEl.setAttribute('open', ''); }
+  }
 }
 function drawSheet(focusTitle) {
   const t = top();
@@ -1454,6 +1493,7 @@ function closeSheets() {
   while (stack.length) { const t = stack.pop(); if (t.props.preview) URL.revokeObjectURL(t.props.preview); }
   if (toastEl.parentElement === sheetEl) { document.body.appendChild(toastEl); toastEl.classList.remove('in-sheet'); }
   if (sheetEl.open) sheetEl.close();
+  document.documentElement.classList.remove('sheet-open');
   sheetEl.innerHTML = '';
 }
 sheetEl.addEventListener('cancel', e => { e.preventDefault(); backSheet(); });
@@ -1656,7 +1696,12 @@ SHEETS.form = {
       + `<option value="__new"${p.cat === '__new' ? ' selected' : ''}>+ เพิ่มหมวดใหม่…</option></select>`
       + (p.cat === '__new' ? `<input class="input" id="f-newcat" data-f="newCat" maxlength="40" placeholder="ชื่อหมวดใหม่" value="${esc(p.newCat)}" aria-label="ชื่อหมวดใหม่">` : '');
     const units = uniq([...S.items.map(i => i.unit), ...UNITS], 30);
-    const locs = uniq(S.items.slice().sort((a, b) => b.lastAt - a.lastAt).map(i => i.loc), 40);
+    const onList = S.locs.some(l => l === p.loc);
+    const locSel = `<select class="input" id="f-loc" data-f="loc"><option value=""${!p.loc ? ' selected' : ''} disabled>เลือกสถานที่เก็บ</option>`
+      + S.locs.map(l => `<option value="${esc(l)}"${p.loc === l ? ' selected' : ''}>${esc(l)}</option>`).join('')
+      + (p.loc && p.loc !== '__new' && !onList ? `<option value="${esc(p.loc)}" selected>${esc(p.loc)} (ไม่อยู่ในรายการแล้ว)</option>` : '')
+      + `<option value="__new"${p.loc === '__new' ? ' selected' : ''}>+ เพิ่มสถานที่ใหม่…</option></select>`
+      + (p.loc === '__new' ? `<input class="input" id="f-newloc" data-f="newLoc" maxlength="80" placeholder="เช่น ห้องสต็อก ชั้น A2" value="${esc(p.newLoc)}" aria-label="ชื่อสถานที่เก็บใหม่">` : '');
     const fields = `${photo}
 <div class="field"><label class="lab" for="f-name">ชื่อรายการ <span class="req">*</span></label><input class="input" id="f-name" data-f="name" maxlength="120" autocomplete="off" placeholder="เช่น Security tether USB-C" value="${esc(p.name)}"></div>
 <div class="field"><span class="lab" id="lab-ch">Channel <span class="req">*</span></span><div class="seg" role="group" aria-labelledby="lab-ch">${CHANNELS.map(c => `<button type="button" data-fch="${c.id}" aria-pressed="${p.ch === c.id}">${esc(c.name)}</button>`).join('')}</div></div>
@@ -1669,21 +1714,21 @@ SHEETS.form = {
 ${isNew ? `<div class="field"><label class="lab" for="f-qty0">จำนวนตั้งต้น</label><input class="input num" id="f-qty0" data-f="qty0" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="${esc(p.qty0)}"></div>` : ''}
 <div class="field"><label class="lab" for="f-min">แจ้งเตือนเมื่อเหลือ</label><input class="input num" id="f-min" data-f="min" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="0 = ไม่แจ้ง" value="${esc(p.min)}"></div>
 </div>
-<div class="field"><label class="lab" for="f-loc">ที่เก็บ<span class="opt">ห้อง / ชั้นวาง / ช่อง</span></label><input class="input" id="f-loc" data-f="loc" list="dl-loc" maxlength="80" autocomplete="off" placeholder="เช่น ห้องสต็อก ชั้น A2" value="${esc(p.loc)}"></div>
+<div class="field"><label class="lab" for="f-loc">สถานที่เก็บ <span class="req">*</span></label>${locSel}${p.loc === '__new' ? '<span class="hint">เพิ่มแล้วทุกคนจะเลือกได้ ถ้าจะลบหรือแก้ชื่อ ทำได้ในแท็บ Locations ของ Google Sheet เท่านั้น</span>' : ''}</div>
 <div class="field"><label class="lab" for="f-note">หมายเหตุ<span class="opt">ไม่บังคับ</span></label><textarea class="input" id="f-note" data-f="note" rows="2" maxlength="500">${esc(p.note)}</textarea></div>
 ${isNew ? '' : '<p class="hint">จำนวนคงเหลือเปลี่ยนได้จากปุ่มรับเข้า เบิกออก หรือปรับยอด เพื่อให้มีประวัติทุกครั้ง</p>'}
 <p class="form-err" id="f-err" role="alert">${esc(p.err)}</p>`;
-    return sheetHead(isNew ? 'เพิ่มรายการใหม่' : 'แก้ไขข้อมูล') + `<div class="sheet-scroll"><form class="stack" id="f-form" novalidate>${fields}</form>${dl('dl-unit', units)}${dl('dl-loc', locs)}</div>`
+    return sheetHead(isNew ? 'เพิ่มรายการใหม่' : 'แก้ไขข้อมูล') + `<div class="sheet-scroll"><form class="stack" id="f-form" novalidate>${fields}</form>${dl('dl-unit', units)}</div>`
       + `<footer class="sheet-foot"><button type="button" class="btn" data-sheet="close">ยกเลิก</button><button type="button" class="btn primary block" data-act="f-save"${p.saving ? ' disabled' : ''}>${esc(p.saving ? p.savingText || 'กำลังบันทึก…' : isNew ? 'บันทึกรายการ' : 'บันทึกการแก้ไข')}</button></footer>`;
   },
   mount(p) {
     $$('[data-f]', sheetEl).forEach(el => {
       el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
         p[el.dataset.f] = el.value;
-        if (el.dataset.f === 'cat') {
+        if (el.dataset.f === 'cat' || el.dataset.f === 'loc') {
           saveFormFields(p);
           drawSheet(false);
-          const nc = $('#f-newcat', sheetEl);
+          const nc = $(el.dataset.f === 'cat' ? '#f-newcat' : '#f-newloc', sheetEl);
           if (nc) nc.focus();
         }
       });
@@ -1696,9 +1741,9 @@ function saveFormFields(p) { $$('[data-f]', sheetEl).forEach(el => { p[el.datase
 function formProps(i) {
   if (!i) {
     const cat = S.v.cat !== 'all' && S.cats[S.v.cat] && !S.cats[S.v.cat].hidden ? S.v.cat : '';
-    return { mode: 'new', ch: S.v.ch !== 'all' ? S.v.ch : '', name: '', cat, newCat: '', code: '', unit: 'ชิ้น', qty0: '', min: '', loc: '', note: '', err: '' };
+    return { mode: 'new', ch: S.v.ch !== 'all' ? S.v.ch : '', name: '', cat, newCat: '', code: '', unit: 'ชิ้น', qty0: '', min: '', loc: S.locs.length === 1 ? S.locs[0] : '', newLoc: '', note: '', err: '' };
   }
-  return { mode: 'edit', id: i.id, ch: chKey(i) === '_none' ? '' : i.ch, name: i.name, cat: S.cats[i.cat] ? i.cat : '', newCat: '', code: i.code, unit: i.unit, min: i.min ? String(i.min) : '', loc: i.loc, note: i.note, photo: i.photo, thumb: i.thumb, err: '' };
+  return { mode: 'edit', id: i.id, ch: chKey(i) === '_none' ? '' : i.ch, name: i.name, cat: S.cats[i.cat] ? i.cat : '', newCat: '', code: i.code, unit: i.unit, min: i.min ? String(i.min) : '', loc: i.loc, newLoc: '', note: i.note, photo: i.photo, thumb: i.thumb, err: '' };
 }
 function formFail(p, msg, focusId) {
   p.err = msg; p.saving = false;
@@ -1714,6 +1759,8 @@ async function saveForm(p) {
   if (p.cat === '__new' && !str(p.newCat).trim()) return formFail(p, 'ใส่ชื่อหมวดใหม่ หรือเลือกหมวดที่มีอยู่', 'f-newcat');
   if (!p.ch) return formFail(p, 'เลือก Channel: iStudio, U-Store หรือ AIS + Mobi');
   if (!p.cat) return formFail(p, 'เลือกหมวดหมู่ก่อนบันทึก', 'f-cat');
+  if (!p.loc) return formFail(p, 'เลือกสถานที่เก็บก่อนบันทึก', 'f-loc');
+  if (p.loc === '__new' && !str(p.newLoc).trim()) return formFail(p, 'ใส่ชื่อสถานที่เก็บใหม่ หรือเลือกจากรายการ', 'f-newloc');
   const min = str(p.min).trim() === '' ? 0 : toInt(p.min);
   if (!(min >= 0)) return formFail(p, 'จุดแจ้งเตือนต้องเป็นตัวเลข 0 ขึ้นไป', 'f-min');
   const qty0 = !isNew || str(p.qty0).trim() === '' ? 0 : toInt(p.qty0);
@@ -1727,14 +1774,15 @@ async function saveForm(p) {
     if (p.file) { p.savingText = 'กำลังอัปโหลดรูป…'; drawSheet(false); photo = await encodePhoto(p.file); }
     const item = {
       name: name.slice(0, 120), group: p.ch, cat, code: str(p.code).trim().slice(0, 40), unit: str(p.unit).trim().slice(0, 20) || 'ชิ้น', min,
-      loc: str(p.loc).trim().slice(0, 80), note: str(p.note).trim().slice(0, 500),
+      loc: str(p.loc === '__new' ? p.newLoc : p.loc).replace(/\s+/g, ' ').trim().slice(0, 80), note: str(p.note).trim().slice(0, 500),
     };
+    const newLoc = p.loc === '__new';
     if (isNew) {
-      const res = await mutate('addItem', { item, qty0, photo });
+      const res = await mutate('addItem', { item, qty0, photo, newLoc });
       closeSheets();
       toast(`เพิ่ม “${item.name}” แล้ว`, { label: 'ดูรายการ', fn: () => openSheet('detail', { id: res.id }) });
     } else {
-      await mutate('updateItem', { id: p.id, item, photo, removePhoto: !photo && !!p.removePhoto });
+      await mutate('updateItem', { id: p.id, item, newLoc, photo, removePhoto: !photo && !!p.removePhoto });
       backSheet();
       toast('บันทึกการแก้ไขแล้ว');
     }
@@ -1769,7 +1817,8 @@ SHEETS.settings = {
   render(p) {
     const w = canWrite();
     const counts = {};
-    for (const i of S.items) if (!i.deleted) counts[i.cat] = (counts[i.cat] || 0) + 1;
+    const locCounts = {};
+    for (const i of S.items) if (!i.deleted) { counts[i.cat] = (counts[i.cat] || 0) + 1; if (i.loc) locCounts[locKey(i.loc)] = (locCounts[locKey(i.loc)] || 0) + 1; }
     const all = catList(true), vis = all.filter(c => !c.hidden), hid = all.filter(c => c.hidden);
     const del = S.items.filter(i => i.deleted).sort((a, b) => b.deletedAt - a.deletedAt);
     const catRows = vis.map(c => `<div class="cat-row"><input class="input" data-catname="${esc(c.id)}" maxlength="40" value="${esc(c.name)}" aria-label="ชื่อหมวด ${esc(c.name)}"${w ? '' : ' disabled'}>`
@@ -1781,6 +1830,11 @@ SHEETS.settings = {
 ${w ? `<div class="cat-add"><input class="input" id="cat-new" maxlength="40" placeholder="ชื่อหมวดใหม่" aria-label="ชื่อหมวดใหม่" value="${esc(p.newCat)}" enterkeyhint="done"><button type="button" class="btn" data-act="cat-add">เพิ่มหมวด</button></div>` : ''}
 ${hid.length ? `<p class="small muted">หมวดที่ซ่อนไว้: ${hid.map(c => `<button type="button" class="link" data-act="cat-show" data-cat="${esc(c.id)}">${esc(c.name)} (แสดงอีกครั้ง)</button>`).join(' ')}</p>` : ''}
 <p class="hint">แก้ชื่อหมวดได้ทันที ระบบบันทึกเมื่อกดออกจากช่อง หมวดที่ยังมีรายการอยู่ซ่อนไม่ได้</p>
+</section>
+<section class="stack"><h3 class="d-h">สถานที่เก็บ</h3>
+<div class="cat-list">${S.locs.length ? S.locs.map(l => `<div class="loc-row"><span class="bin">${esc(l)}</span><span class="muted small num">${fmt(locCounts[locKey(l)] || 0)} รายการ</span></div>`).join('') : '<p class="muted small">ยังไม่มีสถานที่เก็บ เพิ่มที่แรกด้านล่าง</p>'}</div>
+${w ? `<div class="cat-add"><input class="input" id="loc-new" maxlength="80" placeholder="ชื่อสถานที่ใหม่" aria-label="ชื่อสถานที่เก็บใหม่" value="${esc(p.newLoc || '')}" enterkeyhint="done"><button type="button" class="btn" data-act="loc-add">เพิ่มสถานที่</button></div>` : ''}
+<p class="hint">เพิ่มสถานที่ได้จากในแอป ส่วนการลบหรือแก้ชื่อ ทำได้ในแท็บ <b>Locations</b> ของ Google Sheet เท่านั้น (ลบทั้งแถว)</p>
 </section>
 <section class="stack"><h3 class="d-h">รายการที่ลบแล้ว</h3>
 ${del.length ? `<div class="del-list">${del.map(i => `<div class="del-row" data-id="${esc(i.id)}">${thumbHtml(i, 40)}<div class="del-t"><div class="del-name">${esc(i.name)}</div><div class="muted small">ลบเมื่อ ${i.deletedAt ? esc(D_DAY.format(i.deletedAt)) : '—'}</div></div>${w ? `<button type="button" class="btn sm" data-act="restore">${svg('restore', 18)}กู้คืน</button>` : ''}</div>`).join('')}</div>` : '<p class="muted small">ไม่มีรายการที่ลบ</p>'}
@@ -1801,8 +1855,20 @@ ${S.sheetUrl ? `<a class="link" href="${esc(S.sheetUrl)}" target="_blank" rel="n
       nc.addEventListener('input', () => { p.newCat = nc.value; });
       nc.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doAddCat(p); } });
     }
+    const nl = $('#loc-new', sheetEl);
+    if (nl) {
+      nl.addEventListener('input', () => { p.newLoc = nl.value; });
+      nl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doAddLoc(p); } });
+    }
   },
 };
+const locKey = v => str(v).replace(/\s+/g, ' ').trim().toLowerCase();
+async function doAddLoc(p) {
+  const name = str(p.newLoc).replace(/\s+/g, ' ').trim().slice(0, 80);
+  if (!name) { const el = $('#loc-new', sheetEl); if (el) el.focus(); return; }
+  if (S.locs.some(l => locKey(l) === locKey(name))) { toast(`มี “${name}” อยู่แล้ว`); return; }
+  try { await mutate('addLoc', { name }); p.newLoc = ''; toast(`เพิ่มสถานที่ “${name}” แล้ว`); drawSheet(false); } catch (e) { toast(errMsg(e)); }
+}
 async function doAddCat(p) {
   const name = str(p.newCat).trim();
   if (!name) { const el = $('#cat-new', sheetEl); if (el) el.focus(); return; }
@@ -1906,7 +1972,7 @@ document.addEventListener('click', e => {
     case 'in': case 'out': case 'adj': if (id) openMove(id, a.dataset.act); break;
     case 'new': if (canWrite()) openSheet('form', formProps(null)); break;
     case 'edit': { const i = S.byId.get(id); if (i && canWrite()) openSheet('form', formProps(i)); break; }
-    case 'settings': openSheet('settings', { newCat: '' }); break;
+    case 'settings': openSheet('settings', { newCat: '', newLoc: '' }); break;
     case 'm-save': if (s && s.kind === 'move') saveMove(s.props); break;
     case 'f-save': if (s && s.kind === 'form') saveForm(s.props); break;
     case 'f-rmphoto':
@@ -1922,6 +1988,7 @@ document.addEventListener('click', e => {
     case 'restore': if (id) restore(id); break;
     case 'card-all': if (s) { s.props.cardAll = true; drawSheet(false); } break;
     case 'cat-add': if (s) doAddCat(s.props); break;
+    case 'loc-add': if (s) doAddLoc(s.props); break;
     case 'cat-hide': setCatHidden(a.dataset.cat, true); break;
     case 'cat-show': setCatHidden(a.dataset.cat, false); break;
     case 'h-more': { const row = a.closest('[data-entry]'); S.v.hConfirm = row && S.v.hConfirm !== row.dataset.entry ? row.dataset.entry : null; renderHistory(); resolveNames(); break; }
