@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HQ Stock debug</title>
+<body style="margin:0;font:13px -apple-system,system-ui,sans-serif"><pre id="o" style="white-space:pre-wrap;padding:12px;margin:0;background:#fff3cd;color:#222">กำลังตรวจ…</pre><iframe id="f" style="width:100%;height:80vh;border:0"></iframe>
+<script>
+var o=document.getElementById('o'),f=document.getElementById('f');
+function show(x){o.textContent=x;}
+fetch('index.html?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
+  var hook='<base href="'+location.href.replace(/[^/]*$/,'')+'"><script>window.__errs=[];window.addEventListener("error",function(e){__errs.push("ERR: "+(e.message||e)+" @"+(e.lineno||"")+":"+(e.colno||""));});window.addEventListener("unhandledrejection",function(e){__errs.push("REJ: "+(e.reason&&(e.reason.stack||e.reason.message)||e.reason));});<\/script>';
+  f.srcdoc=t.replace('<head>','<head>'+hook);
+  setTimeout(function(){
+    var w=f.contentWindow,d=f.contentDocument,res=[];
+    res.push('UA: '+navigator.userAgent);
+    res.push('size: '+t.length);
+    try{res.push('errors: '+(w.__errs.length?w.__errs.join('\n'):'none'));}catch(e){res.push('read fail '+e);}
+    try{['v-stock','v-history','v-dash','gate'].forEach(function(id){var el=d.getElementById(id);res.push(id+': '+(el?(el.hidden?'hidden':'shown'):'missing'));});}catch(e){res.push('dom fail '+e);}
+    show(res.join('\n'));
+  },4000);
+}).catch(function(e){show('fetch fail '+e);});
+</script>
